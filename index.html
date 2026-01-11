@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>영어 탐험 플래너</title>
+    <title>더와이즈영어 강일미사 플래너</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- React & ReactDOM -->
@@ -52,18 +52,18 @@
 
             useEffect(() => {
                 try {
-                    const savedTasks = localStorage.getItem('kidsPlannerData');
-                    const savedName = localStorage.getItem('kidsPlannerName');
-                    const savedDates = localStorage.getItem('kidsPlannerDates');
+                    const savedTasks = localStorage.getItem('wisePlannerData');
+                    const savedName = localStorage.getItem('wisePlannerName');
+                    const savedDates = localStorage.getItem('wisePlannerDates');
                     if (savedTasks) setCompletedTasks(JSON.parse(savedTasks));
                     if (savedName) setUserName(savedName);
                     if (savedDates) setDayDates(JSON.parse(savedDates));
                 } catch (e) { console.error(e); }
             }, []);
 
-            useEffect(() => { localStorage.setItem('kidsPlannerData', JSON.stringify(completedTasks)); }, [completedTasks]);
-            useEffect(() => { localStorage.setItem('kidsPlannerName', userName); }, [userName]);
-            useEffect(() => { localStorage.setItem('kidsPlannerDates', JSON.stringify(dayDates)); }, [dayDates]);
+            useEffect(() => { localStorage.setItem('wisePlannerData', JSON.stringify(completedTasks)); }, [completedTasks]);
+            useEffect(() => { localStorage.setItem('wisePlannerName', userName); }, [userName]);
+            useEffect(() => { localStorage.setItem('wisePlannerDates', JSON.stringify(dayDates)); }, [dayDates]);
 
             const handleDateChange = (e) => {
                 setDayDates(prev => ({ ...prev, [`day-${currentDay}`]: e.target.value }));
@@ -71,19 +71,19 @@
 
             const handleReset = () => {
                 setCompletedTasks({}); setUserName(''); setDayDates({}); setCurrentDay(1);
-                localStorage.removeItem('kidsPlannerData'); localStorage.removeItem('kidsPlannerName'); localStorage.removeItem('kidsPlannerDates');
+                localStorage.removeItem('wisePlannerData'); localStorage.removeItem('wisePlannerName'); localStorage.removeItem('wisePlannerDates');
                 setShowResetConfirm(false);
             };
 
+            // 수정된 리스트: 더와이즈영어 강일미사 커리큘럼 반영
             const dailyTasks = [
-                { id: 'word_read', category: '단어 (Word)', title: '큰 소리로 읽기', desc: '5번, 7번, 10번 읽기', icon: IconVolume2, color: 'bg-blue-100 text-blue-600' },
-                { id: 'word_write', category: '단어 (Word)', title: '단어 쓰기', desc: '5번, 7번, 10번 쓰기', icon: IconPencil, color: 'bg-blue-100 text-blue-600' },
-                { id: 'mb_read', category: '문장 해석 (M.B)', title: '문장 읽기', desc: '3번, 4번, 5번 읽기', icon: IconBookOpen, color: 'bg-green-100 text-green-600' },
-                { id: 'mb_trans', category: '문장 해석 (M.B)', title: '문장 해석하기', desc: '3번, 4번, 5번 해석', icon: IconBookOpen, color: 'bg-green-100 text-green-600' },
-                { id: 'writing_topic', category: '쓰기 (Writing)', title: '주제 쓰기 (Topic / B.R)', desc: '주제에 맞춰 글쓰기', icon: IconPencil, color: 'bg-yellow-100 text-yellow-600' },
-                { id: 'writing_etc', category: '쓰기 (Writing)', title: '영어/한글 쓰기', desc: '영쓰 / 한쓰 / 기타', icon: IconPencil, color: 'bg-yellow-100 text-yellow-600' },
-                { id: 'leddi_read', category: '읽기 (Leddi)', title: '집중 읽기', desc: '2, 3, 4, 5번 읽기', icon: IconBookOpen, color: 'bg-purple-100 text-purple-600' },
-                { id: 'class_check', category: '마무리 학습', title: '클카 / C5 / G', desc: '학습 완료 후 체크하기', icon: IconStar, color: 'bg-pink-100 text-pink-600' },
+                { id: 'word_read', category: '단어 (Word)', title: '큰 소리로 읽기', desc: '5번, 7번, 10번 읽기', icon: IconVolume2, color: 'bg-red-100 text-red-600' },
+                { id: 'word_write', category: '단어 (Word)', title: '공책에 단어 쓰기', desc: '5번, 7번, 10번 쓰기', icon: IconPencil, color: 'bg-red-100 text-red-600' },
+                { id: 'mb_read', category: 'M.B(미션북)', title: 'Sentence structure', desc: 'Sentence structure', icon: IconBookOpen, color: 'bg-yellow-100 text-yellow-600' },
+                { id: 'mb_trans', category: 'M.B(미션북)', title: '문장 해석하기', desc: 'Sentence translation', icon: IconBookOpen, color: 'bg-yellow-100 text-yellow-600' },
+                { id: 'writing_etc', category: '쓰기 (Writing)', title: '영쓰/한쓰topic/book report', desc: '주제에 맞춰 글쓰기', icon: IconPencil, color: 'bg-green-100 text-green-600' },
+                { id: 'leddi_read', category: '다독정독 (Leddi)', title: '집중 읽기', desc: 'Comprehension Quiz', icon: IconBookOpen, color: 'bg-blue-100 text-blue-600' },
+                { id: 'class_check', category: '마무리 학습', title: '클카 / C5 / G', desc: '학습 완료 후 체크하기', icon: IconStar, color: 'bg-purple-100 text-purple-600' },
             ];
 
             const toggleTask = (taskId) => {
@@ -98,7 +98,9 @@
             };
 
             const triggerConfetti = () => {
-                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#FFB6C1', '#87CEEB', '#FFFACD', '#E6E6FA'] });
+                if (window.confetti) {
+                    window.confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#FFB6C1', '#87CEEB', '#FFFACD', '#E6E6FA'] });
+                }
             };
 
             const calculateProgress = () => {
@@ -134,7 +136,7 @@
                         <div className="bg-gradient-to-r from-orange-300 to-pink-300 p-6 rounded-b-[2.5rem] shadow-md z-10 relative">
                             <div className="flex justify-between items-start text-white mb-4">
                                 <div className="flex-1">
-                                    <h1 className="text-2xl font-bold tracking-tight mb-1">영어 탐험 🚀</h1>
+                                    <h1 className="text-2xl font-bold tracking-tight mb-1">더와이즈영어 강일미사</h1>
                                     <div className="flex items-center gap-2 bg-white/20 p-1.5 rounded-lg w-fit backdrop-blur-sm">
                                         <IconUser size={16} className="text-white ml-1" />
                                         <input type="text" placeholder="이름을 써주세요" value={userName} onChange={(e) => setUserName(e.target.value)} className="bg-transparent border-none text-white placeholder-white/70 text-sm font-medium focus:ring-0 p-0 w-24 outline-none" />
@@ -200,4 +202,3 @@
     </script>
 </body>
 </html>
-**
